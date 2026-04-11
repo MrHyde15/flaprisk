@@ -1,0 +1,140 @@
+{
+  "model_version": "xgb_v1.0",
+  "trained_at": "2026-04-11T17:45:22.250912+00:00",
+  "n_patients": 649,
+  "n_events": 111,
+  "event_rate": 0.171,
+  "auc_train": 0.9834,
+  "auc_test": 0.8771,
+  "brier_train": 0.0385,
+  "brier_test": 0.0777,
+  "cv_auc_mean": 0.8484,
+  "cv_auc_std": 0.0592,
+  "predictors": [
+    "tipodecolgajolibre",
+    "sexo",
+    "obesidad",
+    "bajopeso",
+    "asa",
+    "hipertension",
+    "diabetes",
+    "evp",
+    "antecedente_onco",
+    "radioterapia",
+    "quimioterapia",
+    "transfusion_preop",
+    "antecedentedetrauma",
+    "infeccion_previa",
+    "cirugia_previa",
+    "componentesdelcolgajo",
+    "indicacion",
+    "anemia",
+    "sitioreceptor"
+  ],
+  "categories": {
+    "tipodecolgajolibre": [
+      "0",
+      "1",
+      "2",
+      "3",
+      "4"
+    ],
+    "sexo": [
+      "0",
+      "1"
+    ],
+    "obesidad": [
+      "0",
+      "1"
+    ],
+    "bajopeso": [
+      "0",
+      "1"
+    ],
+    "asa": [
+      "1",
+      "2",
+      "3",
+      "4",
+      "5"
+    ],
+    "hipertension": [
+      "0",
+      "1"
+    ],
+    "diabetes": [
+      "0",
+      "1"
+    ],
+    "evp": [
+      "0",
+      "1"
+    ],
+    "antecedente_onco": [
+      "0",
+      "1"
+    ],
+    "radioterapia": [
+      "0",
+      "1"
+    ],
+    "quimioterapia": [
+      "0",
+      "1"
+    ],
+    "transfusion_preop": [
+      "0",
+      "1"
+    ],
+    "antecedentedetrauma": [
+      "0",
+      "1"
+    ],
+    "infeccion_previa": [
+      "0",
+      "1"
+    ],
+    "cirugia_previa": [
+      "0",
+      "1"
+    ],
+    "componentesdelcolgajo": [
+      "DERMOGRASO",
+      "FASCIOCUTANEO",
+      "MUSCULAR",
+      "MUSCULOCUTANEO",
+      "NERVIO",
+      "OSEO",
+      "OSTEOCUTANEO",
+      "REIMPLANTE",
+      "VASCULAR"
+    ],
+    "indicacion": [
+      "AREA CRUENTA SECUNDARIO A PROCEDIMIENTO",
+      "CONGÉNITO",
+      "FACIAL",
+      "INFECCIÓN CONCOMITANTE",
+      "LINFEDEMA",
+      "ONCOLÓGICO",
+      "OSTEONECROSIS",
+      "REASIGNACIÓN DE GENERO",
+      "RECONSTRUCCIÓN PREVIA FALLIDA",
+      "SECUELA DE QUEMADURAS",
+      "TRAUMA"
+    ],
+    "anemia": [
+      "0",
+      "1"
+    ],
+    "sitioreceptor": [
+      "CABEZA Y CUELLO",
+      "DORSO",
+      "MAMA",
+      "MIEMBRO INFERIOR",
+      "MIEMBRO SUPERIOR",
+      "PERINEAL",
+      "REGION GLUTEA DERECHA",
+      "TÓRAX"
+    ]
+  }
+}

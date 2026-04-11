@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: flaprisk
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app:app
+    envVars:
+      - key: ACCESS_KEY
+        sync: false
+      - key: GOOGLE_SHEETS_ID
+        sync: false
+      - key: GOOGLE_CREDENTIALS_JSON
+        sync: false
+      - key: PYTHON_VERSION
+        value: 3.11.9
