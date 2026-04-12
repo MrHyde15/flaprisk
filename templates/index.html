@@ -1,4 +1,289 @@
-                         <path d="M10 6v5M10 13.5v.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="theme-color" content="#f5f5f7">
+    <title>FlapRisk — Evaluacion de Riesgo</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <header class="topbar">
+        <div class="topbar-inner">
+            <div class="topbar-brand">
+                <svg viewBox="0 0 48 48" fill="none">
+                    <circle cx="24" cy="24" r="22" stroke="#0071e3" stroke-width="2.5"/>
+                    <path d="M16 24c0-4.4 3.6-8 8-8s8 3.6 8 8-3.6 8-8 8" stroke="#0071e3" stroke-width="2.5" stroke-linecap="round"/>
+                    <circle cx="24" cy="24" r="3.5" fill="#0071e3"/>
+                </svg>
+                <span>FlapRisk</span>
+            </div>
+            <a href="/logout" class="topbar-logout">Salir</a>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Progress -->
+        <div class="progress-wrapper">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <div class="step-indicator">
+                <span class="step-counter" id="stepCounter"></span>
+                <span class="step-label" id="stepLabel"></span>
+            </div>
+        </div>
+
+        <!-- Wizard -->
+        <form id="wizardForm" novalidate>
+
+            <!-- Step 1: Registrador -->
+            <section class="step active" data-step="1">
+                <h2>Registrador</h2>
+                <div class="form-card">
+                    <div class="field">
+                        <label for="registrador">Nombre completo</label>
+                        <input type="text" id="registrador" name="registrador" required
+                               placeholder="Dr. / Dra." autocomplete="name">
+                    </div>
+                    <div class="field">
+                        <label for="centro">Centro participante</label>
+                        <select id="centro" name="centro" required>
+                            <option value="">Seleccionar...</option>
+                        </select>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Step 2: Paciente -->
+            <section class="step" data-step="2">
+                <h2>Paciente</h2>
+                <div class="form-card">
+                    <div class="field">
+                        <label for="id_paciente">ID del paciente</label>
+                        <input type="text" id="id_paciente" name="id_paciente" required
+                               placeholder="Identificador unico">
+                    </div>
+                    <div class="field">
+                        <label for="sexo">Sexo</label>
+                        <select id="sexo" name="sexo" required>
+                            <option value="">Seleccionar...</option>
+                        </select>
+                    </div>
+                    <div class="field">
+                        <label for="edad">Edad</label>
+                        <input type="number" id="edad" name="edad" required
+                               min="18" max="100" placeholder="18 – 100 anos" inputmode="numeric">
+                    </div>
+                </div>
+            </section>
+
+            <!-- Step 3: Comorbilidades -->
+            <section class="step" data-step="3">
+                <h2>Comorbilidades</h2>
+                <div class="binary-grid">
+                    <div class="binary-field">
+                        <label>Obesidad</label>
+                        <div class="toggle-group" data-name="obesidad">
+                            <button type="button" class="toggle-btn" data-value="0">No</button>
+                            <button type="button" class="toggle-btn" data-value="1">Si</button>
+                        </div>
+                    </div>
+                    <div class="binary-field">
+                        <label>Bajo peso</label>
+                        <div class="toggle-group" data-name="bajopeso">
+                            <button type="button" class="toggle-btn" data-value="0">No</button>
+                            <button type="button" class="toggle-btn" data-value="1">Si</button>
+                        </div>
+                    </div>
+                    <div class="binary-field">
+                        <label>Hipertension</label>
+                        <div class="toggle-group" data-name="hipertension">
+                            <button type="button" class="toggle-btn" data-value="0">No</button>
+                            <button type="button" class="toggle-btn" data-value="1">Si</button>
+                        </div>
+                    </div>
+                    <div class="binary-field">
+                        <label>Diabetes</label>
+                        <div class="toggle-group" data-name="diabetes">
+                            <button type="button" class="toggle-btn" data-value="0">No</button>
+                            <button type="button" class="toggle-btn" data-value="1">Si</button>
+                        </div>
+                    </div>
+                    <div class="binary-field">
+                        <label>Enfermedad vascular periferica</label>
+                        <div class="toggle-group" data-name="evp">
+                            <button type="button" class="toggle-btn" data-value="0">No</button>
+                            <button type="button" class="toggle-btn" data-value="1">Si</button>
+                        </div>
+                    </div>
+                    <div class="binary-field">
+                        <label>Anemia prequirurgica</label>
+                        <div class="toggle-group" data-name="anemia">
+                            <button type="button" class="toggle-btn" data-value="0">No</button>
+                            <button type="button" class="toggle-btn" data-value="1">Si</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-card">
+                    <div class="field">
+                        <label for="asa">Clasificacion ASA</label>
+                        <select id="asa" name="asa" required>
+                            <option value="">Seleccionar...</option>
+                        </select>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Step 4: Historia oncologica -->
+            <section class="step" data-step="4">
+                <h2>Historia oncologica</h2>
+                <div class="binary-grid">
+                    <div class="binary-field">
+                        <label>Antecedente oncologico</label>
+                        <div class="toggle-group" data-name="antecedente_onco">
+                            <button type="button" class="toggle-btn" data-value="0">No</button>
+                            <button type="button" class="toggle-btn" data-value="1">Si</button>
+                        </div>
+                    </div>
+                    <div class="binary-field">
+                        <label>Radioterapia</label>
+                        <div class="toggle-group" data-name="radioterapia">
+                            <button type="button" class="toggle-btn" data-value="0">No</button>
+                            <button type="button" class="toggle-btn" data-value="1">Si</button>
+                        </div>
+                    </div>
+                    <div class="binary-field">
+                        <label>Quimioterapia</label>
+                        <div class="toggle-group" data-name="quimioterapia">
+                            <button type="button" class="toggle-btn" data-value="0">No</button>
+                            <button type="button" class="toggle-btn" data-value="1">Si</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Step 5: Historia quirurgica -->
+            <section class="step" data-step="5">
+                <h2>Historia quirurgica</h2>
+                <div class="binary-grid">
+                    <div class="binary-field">
+                        <label>Transfusion preoperatoria</label>
+                        <div class="toggle-group" data-name="transfusion_preop">
+                            <button type="button" class="toggle-btn" data-value="0">No</button>
+                            <button type="button" class="toggle-btn" data-value="1">Si</button>
+                        </div>
+                    </div>
+                    <div class="binary-field">
+                        <label>Antecedente de trauma</label>
+                        <div class="toggle-group" data-name="antecedentedetrauma">
+                            <button type="button" class="toggle-btn" data-value="0">No</button>
+                            <button type="button" class="toggle-btn" data-value="1">Si</button>
+                        </div>
+                    </div>
+                    <div class="binary-field">
+                        <label>Infeccion previa</label>
+                        <div class="toggle-group" data-name="infeccion_previa">
+                            <button type="button" class="toggle-btn" data-value="0">No</button>
+                            <button type="button" class="toggle-btn" data-value="1">Si</button>
+                        </div>
+                    </div>
+                    <div class="binary-field">
+                        <label>Cirugia previa</label>
+                        <div class="toggle-group" data-name="cirugia_previa">
+                            <button type="button" class="toggle-btn" data-value="0">No</button>
+                            <button type="button" class="toggle-btn" data-value="1">Si</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Step 6: Cirugia planeada -->
+            <section class="step" data-step="6">
+                <h2>Cirugia planeada</h2>
+                <div class="form-card">
+                    <div class="field">
+                        <label for="tipodecolgajolibre">Tipo de colgajo libre</label>
+                        <select id="tipodecolgajolibre" name="tipodecolgajolibre" required>
+                            <option value="">Seleccionar...</option>
+                        </select>
+                    </div>
+                    <div class="field">
+                        <label for="componentesdelcolgajo">Componentes del colgajo</label>
+                        <select id="componentesdelcolgajo" name="componentesdelcolgajo" required>
+                            <option value="">Seleccionar...</option>
+                        </select>
+                    </div>
+                    <div class="field">
+                        <label for="indicacion">Indicacion quirurgica</label>
+                        <select id="indicacion" name="indicacion" required>
+                            <option value="">Seleccionar...</option>
+                        </select>
+                    </div>
+                    <div class="field">
+                        <label for="sitioreceptor">Sitio receptor</label>
+                        <select id="sitioreceptor" name="sitioreceptor" required>
+                            <option value="">Seleccionar...</option>
+                        </select>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Step 7: Tabaquismo -->
+            <section class="step" data-step="7">
+                <h2>Tabaquismo</h2>
+                <div class="step-note">
+                    Esta variable se registra para la cohorte prospectiva.<br>
+                    No se incluye en la prediccion actual del modelo.
+                </div>
+                <div class="form-card">
+                    <div class="field">
+                        <label for="tabaquismo">Estado de tabaquismo</label>
+                        <select id="tabaquismo" name="tabaquismo" required>
+                            <option value="">Seleccionar...</option>
+                        </select>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Step 8: Resultado -->
+            <section class="step" data-step="8">
+                <h2>Resultado</h2>
+
+                <!-- Loading -->
+                <div id="loadingArea" class="loading-area hidden">
+                    <div class="spinner"></div>
+                    <p class="loading-text">Calculando riesgo...</p>
+                </div>
+
+                <!-- Result -->
+                <div id="resultArea" class="result-area hidden">
+                    <div class="form-card">
+                        <div class="risk-display">
+                            <svg class="risk-ring" viewBox="0 0 180 180">
+                                <circle class="risk-ring-bg" cx="90" cy="90" r="80"/>
+                                <circle class="risk-ring-fill" id="riskRingFill" cx="90" cy="90" r="80"/>
+                            </svg>
+                            <div class="risk-center">
+                                <span class="risk-value" id="riskValue">—</span>
+                                <span class="risk-unit">riesgo</span>
+                            </div>
+                        </div>
+
+                        <div id="riskLevelBadge" class="risk-level-badge">
+                            <span class="dot"></span>
+                            <span id="riskLevelText"></span>
+                        </div>
+
+                        <p class="risk-model-info" id="riskModelInfo"></p>
+                    </div>
+
+                    <div class="disclaimer-box">
+                        <svg class="disclaimer-icon" viewBox="0 0 20 20" fill="none">
+                            <circle cx="10" cy="10" r="9" stroke="currentColor" stroke-width="1.5"/>
+                            <path d="M10 6v5M10 13.5v.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
                         </svg>
                         <div class="disclaimer-text">
                             <strong>Aviso clinico</strong>
