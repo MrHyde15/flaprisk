@@ -133,6 +133,18 @@
                         <select id="asa" name="asa" required>
                             <option value="">Seleccionar...</option>
                         </select>
+                        <p id="asaWarning" class="hidden" style="color:#b45309;font-size:0.85rem;margin:0.5rem 0 0;">
+                            ASA 1 no es compatible con las comorbilidades seleccionadas.
+                        </p>
+                    </div>
+                    <div class="field">
+                        <label for="tabaquismo">Estado de tabaquismo</label>
+                        <select id="tabaquismo" name="tabaquismo" required>
+                            <option value="">Seleccionar...</option>
+                        </select>
+                        <p style="color:#86868b;font-size:0.8rem;margin:0.25rem 0 0;">
+                            Variable prospectiva — no incluida en la prediccion del modelo.
+                        </p>
                     </div>
                 </div>
             </section>
@@ -198,6 +210,16 @@
                         </div>
                     </div>
                 </div>
+                <div id="warningAnemiaTransfusion" class="hidden"
+                     style="background:#fef3c7;border:1px solid #f59e0b;border-radius:12px;padding:1rem;margin-top:1rem;">
+                    <p style="margin:0 0 0.5rem;color:#92400e;font-size:0.9rem;">
+                        <strong>Atencion:</strong> Anemia = No con Transfusion preoperatoria = Si es una combinacion inusual.
+                    </p>
+                    <label style="display:flex;align-items:center;gap:0.5rem;color:#92400e;font-size:0.85rem;cursor:pointer;">
+                        <input type="checkbox" id="confirmAnemiaTransfusion">
+                        Confirmo que los datos son correctos
+                    </label>
+                </div>
             </section>
 
             <!-- Step 6: Cirugia planeada -->
@@ -228,28 +250,16 @@
                             <option value="">Seleccionar...</option>
                         </select>
                     </div>
-                </div>
-            </section>
-
-            <!-- Step 7: Tabaquismo -->
-            <section class="step" data-step="7">
-                <h2>Tabaquismo</h2>
-                <div class="step-note">
-                    Esta variable se registra para la cohorte prospectiva.<br>
-                    No se incluye en la prediccion actual del modelo.
-                </div>
-                <div class="form-card">
-                    <div class="field">
-                        <label for="tabaquismo">Estado de tabaquismo</label>
-                        <select id="tabaquismo" name="tabaquismo" required>
-                            <option value="">Seleccionar...</option>
-                        </select>
+                    <div class="field hidden" id="otroColgajoField">
+                        <label for="otro_colgajo_cual">Especifique el colgajo</label>
+                        <input type="text" id="otro_colgajo_cual" name="otro_colgajo_cual"
+                               placeholder="Nombre del colgajo">
                     </div>
                 </div>
             </section>
 
-            <!-- Step 8: Resultado -->
-            <section class="step" data-step="8">
+            <!-- Step 7: Resultado -->
+            <section class="step" data-step="7">
                 <h2>Resultado</h2>
 
                 <!-- Loading -->
