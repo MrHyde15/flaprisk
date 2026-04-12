@@ -42,12 +42,13 @@ UMBRALES_COLGAJO = {
 
 # ─── Centros participantes ───────────────────────────────────────────
 CENTROS = [
-    "Clínica Colombia",
-    "San José",
-    "Nogales",
-    "Méderi",
-    "Samaritana",
+    "Clínica Universitaria Colombia",
+    "Hospital de San José",
+    "Clínica Los Nogales",
+    "Hospital Universitario Mayor Méderi",
+    "Hospital Universitario de la Samaritana",
     "Hospital Universitario Nacional",
+    "Instituto Nacional de Cancerología",
 ]
 
 # ─── Opciones de tabaquismo (solo captura, NO predicción) ────────────
