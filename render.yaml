@@ -3,7 +3,7 @@ services:
     name: flaprisk
     runtime: python
     buildCommand: pip install -r requirements.txt
-    startCommand: gunicorn app:app
+    startCommand: gunicorn app:app --workers 1 --threads 2 --timeout 120 --preload
     envVars:
       - key: ACCESS_KEY
         sync: false
