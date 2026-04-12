@@ -29,13 +29,23 @@ def _get_sheet():
     creds_json = os.environ.get("GOOGLE_CREDENTIALS_JSON", "")
     sheets_id = os.environ.get("GOOGLE_SHEETS_ID", "")
 
+    logger.info("Sheets init — GOOGLE_CREDENTIALS_JSON set: %s", bool(creds_json))
+    logger.info("Sheets init — GOOGLE_SHEETS_ID set: %s", bool(sheets_id))
+
     if not creds_json or not sheets_id:
         return None
+
+    logger.info("Sheets init — creds_json starts with '{': %s, len: %d",
+                creds_json.startswith("{"), len(creds_json))
 
     if os.path.isfile(creds_json):
         creds = Credentials.from_service_account_file(creds_json, scopes=scopes)
     else:
-        creds_info = json.loads(creds_json)
+        try:
+            creds_info = json.loads(creds_json)
+        except Exception as e:
+            logger.error("json.loads(creds_json) failed — %s: %r", type(e).__name__, e)
+            return None
         creds = Credentials.from_service_account_info(creds_info, scopes=scopes)
 
     _client = gspread.authorize(creds)
@@ -60,7 +70,7 @@ def append_record(row_data: list) -> bool:
         sheet.append_row(row_data, value_input_option="USER_ENTERED")
         return True
     except Exception as e:
-        logger.error(f"Failed to write to Google Sheets: {e}")
+        logger.error("Failed to write to Google Sheets: %r", e)
         return False
 
 
