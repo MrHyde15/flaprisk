@@ -3,6 +3,7 @@ Flask backend — prediction API + Google Sheets submission + minimal auth.
 """
 
 import json
+import logging
 import os
 import sys
 import uuid
@@ -10,10 +11,21 @@ from datetime import datetime, timezone
 from functools import wraps
 from pathlib import Path
 
+# ─── Limit threads BEFORE importing numpy/sklearn/xgboost ───────────
+os.environ.setdefault("OMP_NUM_THREADS", "1")
+os.environ.setdefault("OPENBLAS_NUM_THREADS", "1")
+os.environ.setdefault("MKL_NUM_THREADS", "1")
+os.environ.setdefault("VECLIB_MAXIMUM_THREADS", "1")
+os.environ.setdefault("NUMEXPR_NUM_THREADS", "1")
+os.environ.setdefault("XGB_NTHREAD", "1")
+
 # Ensure the project directory is on sys.path
 BASE_DIR = Path(__file__).resolve().parent
 sys.path.insert(0, str(BASE_DIR))
 os.chdir(BASE_DIR)
+
+logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
+logger = logging.getLogger("flaprisk")
 
 import joblib
 import pandas as pd
@@ -28,9 +40,11 @@ app = Flask(__name__,
 app.secret_key = config.ACCESS_KEY + "_session_secret"
 
 # ─── Load model and metadata at startup ──────────────────────────────
+logger.info("Loading XGBoost model...")
 model = joblib.load(str(BASE_DIR / "model" / "xgb_pipeline.joblib"))
 with open(BASE_DIR / "model" / "model_metadata.json") as f:
     model_metadata = json.load(f)
+logger.info("Model loaded — version %s", model_metadata.get("model_version"))
 
 
 # ─── Auth helpers ────────────────────────────────────────────────────
@@ -74,7 +88,6 @@ def index():
         "indicaciones": config.INDICACIONES,
         "sitios": config.SITIOS_RECEPTOR,
         "tabaquismo": config.TABAQUISMO_OPTIONS,
-        "decenios": config.DECENIOS,
         "model_version": config.MODEL_VERSION,
         "form_version": config.FORM_VERSION,
         "sheets_configured": sheets_client.is_configured(),
@@ -97,8 +110,10 @@ def predict():
                 return jsonify({"error": f"Missing variable: {var}"}), 400
             patient[var] = str(val)
 
+        logger.info("Predict request received — building DataFrame")
         df = pd.DataFrame([patient])
         prob = float(model.predict_proba(df)[:, 1][0])
+        logger.info("Predict done — prob=%.4f", prob)
 
         if prob < 0.10:
             level = "bajo"
@@ -139,12 +154,10 @@ def submit():
         config.MODEL_VERSION,
         config.FORM_VERSION,
         data.get("registrador", ""),
-        data.get("email", ""),
         data.get("centro", ""),
         data.get("id_paciente", ""),
         data.get("sexo", ""),
         data.get("edad", ""),
-        data.get("decenio", ""),
         data.get("tipodecolgajolibre", ""),
         data.get("obesidad", ""),
         data.get("bajopeso", ""),
@@ -190,7 +203,6 @@ def get_config():
         "indicaciones": config.INDICACIONES,
         "sitios": config.SITIOS_RECEPTOR,
         "tabaquismo": config.TABAQUISMO_OPTIONS,
-        "decenios": config.DECENIOS,
         "model_version": config.MODEL_VERSION,
         "form_version": config.FORM_VERSION,
         "sheets_configured": sheets_client.is_configured(),

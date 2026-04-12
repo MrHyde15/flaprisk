@@ -37,16 +37,6 @@ TABAQUISMO_OPTIONS = [
     "No registrado",
 ]
 
-# ─── Decenios de edad ───────────────────────────────────────────────
-DECENIOS = [
-    "18–27",
-    "28–37",
-    "38–47",
-    "48–57",
-    "58–67",
-    ">68",
-]
-
 # ─── Sexo ────────────────────────────────────────────────────────────
 SEXO_MAP = {
     0: "Femenino",
@@ -143,12 +133,10 @@ SHEETS_COLUMNS = [
     "version_modelo",
     "version_formulario",
     "registrador",
-    "email",
     "centro",
     "id_paciente",
     "sexo",
     "edad",
-    "decenio",
     "tipodecolgajolibre",
     "obesidad",
     "bajopeso",
