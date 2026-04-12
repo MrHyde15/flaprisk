@@ -41,7 +41,6 @@ function populateSelects() {
     const c = APP_CONFIG;
     fill("centro", c.centros.map(v => [v, v]));
     fill("sexo", Object.entries(c.sexo));
-    fill("decenio", c.decenios.map(v => [v, v]));
     fill("asa", c.asa_options.map(v => [v, "ASA " + v]));
     fill("tipodecolgajolibre", Object.entries(c.tipo_colgajo));
     fill("componentesdelcolgajo", c.componentes.map(v => [v, titleCase(v)]));
