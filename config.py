@@ -20,6 +20,26 @@ TIPO_COLGAJO_MAP = {
     4: "Otros",
 }
 
+# ─── Componentes válidos por tipo de colgajo (EDITABLE) ──────────────
+COLGAJO_COMPONENTES = {
+    "0": ["FASCIOCUTANEO", "OSTEOCUTANEO", "NERVIO"],
+    "1": ["FASCIOCUTANEO", "MUSCULOCUTANEO", "DERMOGRASO"],
+    "2": ["DERMOGRASO"],
+    "3": ["OSTEOCUTANEO", "OSEO", "FASCIOCUTANEO"],
+    "4": ["DERMOGRASO", "FASCIOCUTANEO", "OSTEOCUTANEO", "MUSCULOCUTANEO",
+          "MUSCULAR", "NERVIO", "VASCULAR", "REIMPLANTE", "OSEO"],
+}
+
+# ─── Umbrales comparativos de riesgo vascular ────────────────────────
+TASA_LOCAL = 17.1
+TASA_GLOBAL = 5.1
+UMBRALES_COLGAJO = {
+    "0": 4.5,
+    "1": 6.6,
+    "2": 3.0,
+    "3": 6.6,
+}
+
 # ─── Centros participantes ───────────────────────────────────────────
 CENTROS = [
     "Clínica Colombia",
@@ -156,6 +176,7 @@ SHEETS_COLUMNS = [
     "anemia",
     "sitioreceptor",
     "tabaquismo",
+    "otro_colgajo_cual",
     "riesgo_predicho",
     "estado_registro",
     "observaciones_validacion",

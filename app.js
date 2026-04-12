@@ -2,7 +2,7 @@
    FlapRisk — Frontend Logic (modular, migration-ready)
    ═══════════════════════════════════════════════════════════════════ */
 
-const TOTAL_STEPS = 8;
+const TOTAL_STEPS = 7;
 const RISK_RING_CIRCUMFERENCE = 2 * Math.PI * 80; // r=80 in SVG
 
 const STEP_LABELS = [
@@ -12,15 +12,10 @@ const STEP_LABELS = [
     "Historia oncologica",
     "Historia quirurgica",
     "Cirugia planeada",
-    "Tabaquismo",
     "Resultado",
 ];
 
-const LEVEL_LABELS = {
-    bajo: "Riesgo bajo",
-    moderado: "Riesgo moderado",
-    alto: "Riesgo alto",
-};
+const NOMBRES_COLGAJO = {"0":"Radial forearm","1":"ALT","2":"DIEP","3":"Fibula","4":"Otros"};
 
 let currentStep = 1;
 
@@ -28,6 +23,7 @@ let currentStep = 1;
 document.addEventListener("DOMContentLoaded", () => {
     populateSelects();
     initToggles();
+    initBusinessRules();
     updateUI();
 
     document.getElementById("btnNext").addEventListener("click", onNext);
@@ -66,6 +62,120 @@ function titleCase(s) {
 }
 
 /* ═══════════════════════════════════════════════════════════════════
+   BUSINESS RULES
+   ═══════════════════════════════════════════════════════════════════ */
+function getToggleValue(name) {
+    const group = document.querySelector(`.toggle-group[data-name="${name}"]`);
+    if (!group) return null;
+    const sel = group.querySelector(".toggle-btn.selected");
+    return sel ? sel.dataset.value : null;
+}
+
+function initBusinessRules() {
+    // 1. ASA restriction — diabetes, hta, evp toggles + tabaquismo select
+    ["diabetes", "hipertension", "evp"].forEach(name => {
+        document.querySelector(`.toggle-group[data-name="${name}"]`)
+            ?.querySelectorAll(".toggle-btn")
+            .forEach(btn => btn.addEventListener("click",
+                () => setTimeout(updateASARestriction, 50)));
+    });
+    const tabSel = document.getElementById("tabaquismo");
+    if (tabSel) tabSel.addEventListener("change", updateASARestriction);
+
+    // 2. Oncology cascade — antecedente_onco controls radio/quimio
+    document.querySelector('.toggle-group[data-name="antecedente_onco"]')
+        ?.querySelectorAll(".toggle-btn")
+        .forEach(btn => btn.addEventListener("click",
+            () => setTimeout(applyOncologyCascade, 50)));
+
+    // 3. Component filtering by flap type
+    const tipoSel = document.getElementById("tipodecolgajolibre");
+    if (tipoSel) tipoSel.addEventListener("change", filterComponents);
+}
+
+/* Rule 1 — ASA 1 blocked when comorbidities present */
+function updateASARestriction() {
+    const dm  = getToggleValue("diabetes");
+    const hta = getToggleValue("hipertension");
+    const evp = getToggleValue("evp");
+    const tab = document.getElementById("tabaquismo")?.value || "";
+    const tabPositive = (tab === "Activo" || tab === "Ex-fumador");
+
+    const restricted = dm === "1" || hta === "1" || evp === "1" || tabPositive;
+
+    const asaSel = document.getElementById("asa");
+    const warn   = document.getElementById("asaWarning");
+    if (!asaSel) return;
+
+    const opt1 = asaSel.querySelector('option[value="1"]');
+    if (restricted) {
+        if (opt1) { opt1.disabled = true; opt1.textContent = "ASA 1 (no aplica)"; }
+        if (asaSel.value === "1") {
+            asaSel.value = "";
+            if (warn) warn.classList.remove("hidden");
+        }
+    } else {
+        if (opt1) { opt1.disabled = false; opt1.textContent = "ASA 1"; }
+        if (warn) warn.classList.add("hidden");
+    }
+}
+
+/* Rule 2 — Oncology cascade */
+function applyOncologyCascade() {
+    const onco = getToggleValue("antecedente_onco");
+    ["radioterapia", "quimioterapia"].forEach(name => {
+        const group = document.querySelector(`.toggle-group[data-name="${name}"]`);
+        if (!group) return;
+        group.querySelectorAll(".toggle-btn").forEach(btn => {
+            if (onco === "0") {
+                btn.classList.toggle("selected", btn.dataset.value === "0");
+                btn.disabled = true;
+                btn.style.opacity = "0.4";
+                btn.style.pointerEvents = "none";
+            } else {
+                btn.disabled = false;
+                btn.style.opacity = "";
+                btn.style.pointerEvents = "";
+            }
+        });
+    });
+}
+
+/* Rule 4 — Filter components by flap type + show otro_colgajo field */
+function filterComponents() {
+    const tipoSel  = document.getElementById("tipodecolgajolibre");
+    const compSel  = document.getElementById("componentesdelcolgajo");
+    const otroDiv  = document.getElementById("otroColgajoField");
+    const otroIn   = document.getElementById("otro_colgajo_cual");
+    if (!tipoSel || !compSel) return;
+
+    const tipo    = tipoSel.value;
+    const allowed = APP_CONFIG.colgajo_componentes[tipo];
+
+    // Show/hide "otro colgajo" free-text
+    if (otroDiv) otroDiv.classList.toggle("hidden", tipo !== "4");
+    if (otroIn) {
+        if (tipo === "4") otroIn.setAttribute("required", "");
+        else { otroIn.removeAttribute("required"); otroIn.value = ""; }
+    }
+
+    if (!allowed) {
+        Array.from(compSel.options).forEach(o => { o.hidden = false; o.disabled = false; });
+        return;
+    }
+
+    const cur = compSel.value;
+    Array.from(compSel.options).forEach(o => {
+        if (!o.value) return;              // keep placeholder
+        const ok = allowed.includes(o.value);
+        o.hidden   = !ok;
+        o.disabled = !ok;
+    });
+    if (cur && !allowed.includes(cur)) compSel.value = "";
+    if (allowed.length === 1) compSel.value = allowed[0];
+}
+
+/* ═══════════════════════════════════════════════════════════════════
    TOGGLES — binary Yes/No buttons
    ═══════════════════════════════════════════════════════════════════ */
 function initToggles() {
@@ -90,8 +200,8 @@ function onNext() {
     }
     if (!validateStep(currentStep)) return;
 
-    if (currentStep === 7) {
-        goToStep(8);
+    if (currentStep === 6) {
+        goToStep(7);
         calculateRisk();
         return;
     }
@@ -139,7 +249,7 @@ function updateUI() {
     if (currentStep === TOTAL_STEPS) {
         btnNext.textContent = "Nueva evaluacion";
         btnNext.className = "btn-primary";
-    } else if (currentStep === 7) {
+    } else if (currentStep === 6) {
         btnNext.textContent = "Calcular riesgo";
         btnNext.className = "btn-success";
     } else {
@@ -185,6 +295,21 @@ function validateStep(step) {
             valid = false;
         }
     });
+
+    // Rule 3 — Anemia/transfusion consistency (soft warning, step 5)
+    if (step === 5) {
+        const anemia = getToggleValue("anemia");
+        const transfusion = getToggleValue("transfusion_preop");
+        const warnDiv = document.getElementById("warningAnemiaTransfusion");
+        const confirmCb = document.getElementById("confirmAnemiaTransfusion");
+        if (anemia === "0" && transfusion === "1") {
+            if (warnDiv) warnDiv.classList.remove("hidden");
+            if (confirmCb && !confirmCb.checked) valid = false;
+        } else {
+            if (warnDiv) warnDiv.classList.add("hidden");
+            if (confirmCb) confirmCb.checked = false;
+        }
+    }
 
     // Scroll to first error
     if (!valid) {
@@ -244,7 +369,7 @@ async function calculateRisk() {
         }
 
         hide("loadingArea");
-        renderResult(result);
+        renderResult(result, data.tipodecolgajolibre);
         show("resultArea");
 
         // Auto-save
@@ -257,21 +382,54 @@ async function calculateRisk() {
     }
 }
 
-function renderResult(result) {
+function renderResult(result, tipoColg) {
     const pct = result.risk_percentage;
-    const level = result.risk_level;
+    const cfg = APP_CONFIG;
+    const tasaLocal  = cfg.tasa_local;   // 17.1
+    const tasaGlobal = cfg.tasa_global;  //  5.1
+    const umbral = cfg.umbrales_colgajo[tipoColg]; // number or undefined
 
-    // Value
+    // ── Traffic-light logic ──
+    let cssClass, labelText, refValue;
+
+    if (umbral != null) {
+        // Colgajo con umbral especifico (Radial, ALT, DIEP, Fibula)
+        refValue = umbral;
+        if (pct <= umbral) {
+            cssClass = "bajo";
+            labelText = "Riesgo inferior a la referencia reportada para este tipo de colgajo";
+        } else if (pct <= tasaLocal) {
+            cssClass = "moderado";
+            labelText = "Riesgo superior a la referencia de este colgajo, pero inferior a la tasa local del estudio";
+        } else {
+            cssClass = "alto";
+            labelText = "Riesgo superior a la tasa local observada en la cohorte retrospectiva";
+        }
+    } else {
+        // Otros — referencia global
+        refValue = tasaGlobal;
+        if (pct <= tasaGlobal) {
+            cssClass = "bajo";
+            labelText = "Riesgo inferior a la referencia global reportada";
+        } else if (pct <= tasaLocal) {
+            cssClass = "moderado";
+            labelText = "Riesgo superior a la referencia global, pero inferior a la tasa local del estudio";
+        } else {
+            cssClass = "alto";
+            labelText = "Riesgo superior a la tasa local observada en la cohorte retrospectiva";
+        }
+    }
+
+    // ── Value ──
     const valueEl = document.getElementById("riskValue");
     valueEl.textContent = pct + "%";
-    valueEl.className = "risk-value " + level;
+    valueEl.className = "risk-value " + cssClass;
 
-    // SVG ring animation
+    // ── SVG ring animation ──
     const ringFill = document.getElementById("riskRingFill");
     const fraction = Math.min(pct / 100, 1);
     const offset = RISK_RING_CIRCUMFERENCE * (1 - fraction);
-    ringFill.className.baseVal = "risk-ring-fill " + level;
-    // Force reflow to restart animation
+    ringFill.className.baseVal = "risk-ring-fill " + cssClass;
     ringFill.style.strokeDashoffset = RISK_RING_CIRCUMFERENCE;
     requestAnimationFrame(() => {
         requestAnimationFrame(() => {
@@ -279,14 +437,17 @@ function renderResult(result) {
         });
     });
 
-    // Badge
+    // ── Badge — comparative text ──
     const badge = document.getElementById("riskLevelBadge");
-    badge.className = "risk-level-badge " + level;
-    document.getElementById("riskLevelText").textContent = LEVEL_LABELS[level] || level;
+    badge.className = "risk-level-badge " + cssClass;
+    document.getElementById("riskLevelText").textContent = labelText;
 
-    // Model info
+    // ── Model info + reference thresholds ──
+    const refLabel = umbral != null
+        ? "Ref. " + NOMBRES_COLGAJO[tipoColg] + ": " + refValue + "%"
+        : "Ref. global: " + refValue + "%";
     document.getElementById("riskModelInfo").textContent =
-        "Modelo " + result.model_version + " · AUC test 0.877";
+        "Modelo " + result.model_version + " · AUC 0.877 · " + refLabel + " · Local: " + tasaLocal + "%";
 }
 
 /* ═══════════════════════════════════════════════════════════════════
@@ -328,12 +489,27 @@ function showSaveStatus(msg, success) {
    ═══════════════════════════════════════════════════════════════════ */
 function resetForm() {
     document.getElementById("wizardForm").reset();
-    document.querySelectorAll(".toggle-btn").forEach(b => b.classList.remove("selected"));
+    document.querySelectorAll(".toggle-btn").forEach(b => {
+        b.classList.remove("selected");
+        b.disabled = false;
+        b.style.opacity = "";
+        b.style.pointerEvents = "";
+    });
     document.querySelectorAll(".invalid").forEach(e => e.classList.remove("invalid"));
     document.querySelectorAll(".field-error").forEach(e => e.remove());
     hide("resultArea");
     hide("loadingArea");
     hide("saveStatus");
+    hide("warningAnemiaTransfusion");
+    hide("asaWarning");
+    const otroDiv = document.getElementById("otroColgajoField");
+    if (otroDiv) otroDiv.classList.add("hidden");
+    const otroIn = document.getElementById("otro_colgajo_cual");
+    if (otroIn) { otroIn.removeAttribute("required"); otroIn.value = ""; }
+    const asa1 = document.querySelector('#asa option[value="1"]');
+    if (asa1) { asa1.disabled = false; asa1.textContent = "ASA 1"; }
+    const confirmCb = document.getElementById("confirmAnemiaTransfusion");
+    if (confirmCb) confirmCb.checked = false;
 
     // Reset ring
     const ring = document.getElementById("riskRingFill");
