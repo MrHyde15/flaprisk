@@ -299,8 +299,8 @@ function validateStep(step) {
         }
     });
 
-    // Rule 3 — Anemia/transfusion consistency (soft warning, step 5)
-    if (step === 5) {
+    // Rule 3 — Anemia/transfusion consistency (soft warning, step 3)
+    if (step === 3) {
         const anemia = getToggleValue("anemia");
         const transfusion = getToggleValue("transfusion_preop");
         const warnDiv = document.getElementById("warningAnemiaTransfusion");

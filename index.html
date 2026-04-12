@@ -126,6 +126,23 @@
                             <button type="button" class="toggle-btn" data-value="1">Si</button>
                         </div>
                     </div>
+                    <div class="binary-field">
+                        <label>Transfusion preoperatoria</label>
+                        <div class="toggle-group" data-name="transfusion_preop">
+                            <button type="button" class="toggle-btn" data-value="0">No</button>
+                            <button type="button" class="toggle-btn" data-value="1">Si</button>
+                        </div>
+                    </div>
+                </div>
+                <div id="warningAnemiaTransfusion" class="hidden"
+                     style="background:#fef3c7;border:1px solid #f59e0b;border-radius:12px;padding:1rem;margin-bottom:1rem;">
+                    <p style="margin:0 0 0.5rem;color:#92400e;font-size:0.9rem;">
+                        <strong>Atencion:</strong> Anemia = No con Transfusion preoperatoria = Si es una combinacion inusual.
+                    </p>
+                    <label style="display:flex;align-items:center;gap:0.5rem;color:#92400e;font-size:0.85rem;cursor:pointer;">
+                        <input type="checkbox" id="confirmAnemiaTransfusion">
+                        Confirmo que los datos son correctos
+                    </label>
                 </div>
                 <div class="form-card">
                     <div class="field">
@@ -182,13 +199,6 @@
                 <h2>Historia quirurgica</h2>
                 <div class="binary-grid">
                     <div class="binary-field">
-                        <label>Transfusion preoperatoria</label>
-                        <div class="toggle-group" data-name="transfusion_preop">
-                            <button type="button" class="toggle-btn" data-value="0">No</button>
-                            <button type="button" class="toggle-btn" data-value="1">Si</button>
-                        </div>
-                    </div>
-                    <div class="binary-field">
                         <label>Antecedente de trauma</label>
                         <div class="toggle-group" data-name="antecedentedetrauma">
                             <button type="button" class="toggle-btn" data-value="0">No</button>
@@ -209,16 +219,6 @@
                             <button type="button" class="toggle-btn" data-value="1">Si</button>
                         </div>
                     </div>
-                </div>
-                <div id="warningAnemiaTransfusion" class="hidden"
-                     style="background:#fef3c7;border:1px solid #f59e0b;border-radius:12px;padding:1rem;margin-top:1rem;">
-                    <p style="margin:0 0 0.5rem;color:#92400e;font-size:0.9rem;">
-                        <strong>Atencion:</strong> Anemia = No con Transfusion preoperatoria = Si es una combinacion inusual.
-                    </p>
-                    <label style="display:flex;align-items:center;gap:0.5rem;color:#92400e;font-size:0.85rem;cursor:pointer;">
-                        <input type="checkbox" id="confirmAnemiaTransfusion">
-                        Confirmo que los datos son correctos
-                    </label>
                 </div>
             </section>
 
