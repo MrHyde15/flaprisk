@@ -72,8 +72,8 @@ function getToggleValue(name) {
 }
 
 function initBusinessRules() {
-    // 1. ASA restriction — diabetes, hta, evp toggles + tabaquismo select
-    ["diabetes", "hipertension", "evp"].forEach(name => {
+    // 1. ASA restriction — any comorbidity or tabaquismo blocks ASA 1
+    ["diabetes", "hipertension", "evp", "obesidad", "anemia"].forEach(name => {
         document.querySelector(`.toggle-group[data-name="${name}"]`)
             ?.querySelectorAll(".toggle-btn")
             .forEach(btn => btn.addEventListener("click",
@@ -93,15 +93,18 @@ function initBusinessRules() {
     if (tipoSel) tipoSel.addEventListener("change", filterComponents);
 }
 
-/* Rule 1 — ASA 1 blocked when comorbidities present */
+/* Rule 1 — ASA 1 blocked when any comorbidity or active smoking */
 function updateASARestriction() {
     const dm  = getToggleValue("diabetes");
     const hta = getToggleValue("hipertension");
     const evp = getToggleValue("evp");
+    const obe = getToggleValue("obesidad");
+    const ane = getToggleValue("anemia");
     const tab = document.getElementById("tabaquismo")?.value || "";
     const tabPositive = (tab === "Activo" || tab === "Ex-fumador");
 
-    const restricted = dm === "1" || hta === "1" || evp === "1" || tabPositive;
+    const restricted = dm === "1" || hta === "1" || evp === "1"
+        || obe === "1" || ane === "1" || tabPositive;
 
     const asaSel = document.getElementById("asa");
     const warn   = document.getElementById("asaWarning");
