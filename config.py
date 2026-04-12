@@ -47,6 +47,7 @@ CENTROS = [
     "Nogales",
     "Méderi",
     "Samaritana",
+    "Hospital Universitario Nacional",
 ]
 
 # ─── Opciones de tabaquismo (solo captura, NO predicción) ────────────
