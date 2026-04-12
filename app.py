@@ -46,6 +46,11 @@ with open(BASE_DIR / "model" / "model_metadata.json") as f:
     model_metadata = json.load(f)
 logger.info("Model loaded — version %s", model_metadata.get("model_version"))
 
+# ─── Diagnostic: Sheets env vars ────────────────────────────────────
+_creds_raw = os.environ.get("GOOGLE_CREDENTIALS_JSON", "")
+logger.info("GOOGLE_SHEETS_ID present: %s", bool(os.environ.get("GOOGLE_SHEETS_ID")))
+logger.info("GOOGLE_CREDENTIALS_JSON present: %s, len: %d", bool(_creds_raw), len(_creds_raw))
+
 
 # ─── Auth helpers ────────────────────────────────────────────────────
 def login_required(f):
@@ -206,6 +211,8 @@ def get_config():
         "model_version": config.MODEL_VERSION,
         "form_version": config.FORM_VERSION,
         "sheets_configured": sheets_client.is_configured(),
+        "debug_sheets_id_present": bool(os.environ.get("GOOGLE_SHEETS_ID")),
+        "debug_creds_present": bool(os.environ.get("GOOGLE_CREDENTIALS_JSON")),
     })
 
 
