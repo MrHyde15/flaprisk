@@ -8,7 +8,6 @@
 
 /* ─── Design Tokens ───────────────────────────────────────────────── */
 :root {
-    /* Colors */
     --blue: #0071e3;
     --blue-light: #e8f2ff;
     --blue-hover: #0077ed;
@@ -23,7 +22,6 @@
     --red-bg: #fff2f1;
     --red-dark: #c5221f;
 
-    /* Neutrals */
     --bg: #f5f5f7;
     --surface: #ffffff;
     --text-primary: #1d1d1f;
@@ -32,7 +30,6 @@
     --separator: rgba(0, 0, 0, 0.06);
     --separator-opaque: #e5e5ea;
 
-    /* Spacing */
     --space-xs: 4px;
     --space-sm: 8px;
     --space-md: 16px;
@@ -41,25 +38,21 @@
     --space-2xl: 48px;
     --space-3xl: 64px;
 
-    /* Radii */
     --radius-sm: 10px;
     --radius-md: 14px;
     --radius-lg: 20px;
     --radius-xl: 28px;
     --radius-full: 9999px;
 
-    /* Shadows */
     --shadow-sm: 0 1px 3px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.06);
     --shadow-md: 0 4px 16px rgba(0,0,0,0.06), 0 1px 4px rgba(0,0,0,0.04);
     --shadow-lg: 0 8px 32px rgba(0,0,0,0.08), 0 2px 8px rgba(0,0,0,0.04);
     --shadow-xl: 0 16px 48px rgba(0,0,0,0.1), 0 4px 16px rgba(0,0,0,0.06);
 
-    /* Typography */
     --font: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text',
              'Helvetica Neue', Helvetica, Arial, sans-serif;
     --font-mono: 'SF Mono', SFMono-Regular, ui-monospace, Menlo, monospace;
 
-    /* Layout */
     --max-w: 480px;
     --transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
     --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
@@ -105,17 +98,22 @@ body {
 }
 
 .login-logo {
-    width: 64px;
-    height: 64px;
+    width: 72px;
+    height: 72px;
     margin: 0 auto var(--space-lg);
-    background: var(--blue-light);
-    border-radius: var(--radius-md);
+    border-radius: var(--radius-lg);
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
-.login-logo svg { width: 36px; height: 36px; }
+.login-logo-img {
+    width: 72px;
+    height: 72px;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+    object-fit: contain;
+}
 
 .login-card h1 {
     font-size: 28px;
@@ -189,9 +187,17 @@ body {
     font-size: 17px;
     letter-spacing: -0.4px;
     color: var(--text-primary);
+    min-width: 0;
 }
 
-.topbar-brand svg { width: 26px; height: 26px; }
+.topbar-logo {
+    width: 30px;
+    height: 30px;
+    object-fit: contain;
+    border-radius: 8px;
+    display: block;
+    flex-shrink: 0;
+}
 
 .topbar-logout {
     color: var(--text-secondary);
@@ -808,7 +814,6 @@ body {
     }
 }
 
-/* Safe area for iPhone notch */
 @supports (padding: env(safe-area-inset-bottom)) {
     .nav-buttons {
         padding-bottom: calc(var(--space-md) + env(safe-area-inset-bottom));
