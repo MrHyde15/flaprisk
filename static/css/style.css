@@ -584,9 +584,9 @@ body {
                 stroke 0.5s ease;
 }
 
-.risk-ring-fill.low { stroke: var(--green); }
-.risk-ring-fill.moderate { stroke: var(--orange); }
-.risk-ring-fill.high { stroke: var(--red); }
+.risk-ring-fill.low, .risk-ring-fill.bajo { stroke: var(--green); }
+.risk-ring-fill.moderate, .risk-ring-fill.moderado { stroke: var(--orange); }
+.risk-ring-fill.high, .risk-ring-fill.alto { stroke: var(--red); }
 
 .risk-center {
     position: absolute;
@@ -606,9 +606,9 @@ body {
     transition: color 0.5s ease;
 }
 
-.risk-value.low { color: var(--green-dark); }
-.risk-value.moderate { color: var(--orange-dark); }
-.risk-value.high { color: var(--red-dark); }
+.risk-value.low, .risk-value.bajo { color: var(--green-dark); }
+.risk-value.moderate, .risk-value.moderado { color: var(--orange-dark); }
+.risk-value.high, .risk-value.alto { color: var(--red-dark); }
 
 .risk-unit {
     font-size: 14px;
@@ -636,17 +636,17 @@ body {
     to { opacity: 1; transform: scale(1); }
 }
 
-.risk-level-badge.low {
+.risk-level-badge.low, .risk-level-badge.bajo {
     background: var(--green-bg);
     color: var(--green-dark);
 }
 
-.risk-level-badge.moderate {
+.risk-level-badge.moderate, .risk-level-badge.moderado {
     background: var(--orange-bg);
     color: var(--orange-dark);
 }
 
-.risk-level-badge.high {
+.risk-level-badge.high, .risk-level-badge.alto {
     background: var(--red-bg);
     color: var(--red-dark);
 }
@@ -658,9 +658,9 @@ body {
     animation: pulse 2s ease infinite;
 }
 
-.risk-level-badge.low .dot { background: var(--green); }
-.risk-level-badge.moderate .dot { background: var(--orange); }
-.risk-level-badge.high .dot { background: var(--red); }
+.risk-level-badge.low .dot, .risk-level-badge.bajo .dot { background: var(--green); }
+.risk-level-badge.moderate .dot, .risk-level-badge.moderado .dot { background: var(--orange); }
+.risk-level-badge.high .dot, .risk-level-badge.alto .dot { background: var(--red); }
 
 @keyframes pulse {
     0%, 100% { opacity: 1; }
