@@ -105,17 +105,21 @@ body {
 }
 
 .login-logo {
-    width: 64px;
-    height: 64px;
+    width: 72px;
+    height: 72px;
     margin: 0 auto var(--space-lg);
-    background: var(--blue-light);
-    border-radius: var(--radius-md);
+    border-radius: var(--radius-lg);
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
-.login-logo svg { width: 36px; height: 36px; }
+.login-logo-img {
+    width: 72px;
+    height: 72px;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+}
 
 .login-card h1 {
     font-size: 28px;
@@ -191,7 +195,11 @@ body {
     color: var(--text-primary);
 }
 
-.topbar-brand svg { width: 26px; height: 26px; }
+.topbar-logo {
+    width: 30px;
+    height: 30px;
+    border-radius: 8px;
+}
 
 .topbar-logout {
     color: var(--text-secondary);
