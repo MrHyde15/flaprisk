@@ -23,6 +23,7 @@
     </header>
 
     <main class="container">
+        <!-- Progress -->
         <div class="progress-wrapper">
             <div class="progress-bar">
                 <div class="progress-fill" id="progressFill"></div>
@@ -33,8 +34,10 @@
             </div>
         </div>
 
+        <!-- Wizard -->
         <form id="wizardForm" novalidate>
 
+            <!-- Step 1: Registrador -->
             <section class="step active" data-step="1">
                 <h2>Registrador</h2>
                 <div class="form-card">
@@ -52,6 +55,7 @@
                 </div>
             </section>
 
+            <!-- Step 2: Paciente -->
             <section class="step" data-step="2">
                 <h2>Paciente</h2>
                 <div class="form-card">
@@ -74,6 +78,7 @@
                 </div>
             </section>
 
+            <!-- Step 3: Comorbilidades -->
             <section class="step" data-step="3">
                 <h2>Comorbilidades</h2>
                 <div class="binary-grid">
@@ -127,7 +132,6 @@
                         </div>
                     </div>
                 </div>
-
                 <div id="warningAnemiaTransfusion" class="hidden"
                      style="background:#fef3c7;border:1px solid #f59e0b;border-radius:12px;padding:1rem;margin-bottom:1rem;">
                     <p style="margin:0 0 0.5rem;color:#92400e;font-size:0.9rem;">
@@ -138,7 +142,6 @@
                         Confirmo que los datos son correctos
                     </label>
                 </div>
-
                 <div class="form-card">
                     <div class="field">
                         <label for="asa">Clasificación ASA</label>
@@ -161,6 +164,7 @@
                 </div>
             </section>
 
+            <!-- Step 4: Historia oncológica -->
             <section class="step" data-step="4">
                 <h2>Historia oncológica</h2>
                 <div class="binary-grid">
@@ -188,6 +192,7 @@
                 </div>
             </section>
 
+            <!-- Step 5: Historia quirúrgica -->
             <section class="step" data-step="5">
                 <h2>Historia quirúrgica</h2>
                 <div class="binary-grid">
@@ -215,6 +220,7 @@
                 </div>
             </section>
 
+            <!-- Step 6: Cirugia planeada -->
             <section class="step" data-step="6">
                 <h2>Cirugía planeada</h2>
                 <div class="form-card">
@@ -250,14 +256,17 @@
                 </div>
             </section>
 
+            <!-- Step 7: Resultado -->
             <section class="step" data-step="7">
                 <h2>Resultado</h2>
 
+                <!-- Loading -->
                 <div id="loadingArea" class="loading-area hidden">
                     <div class="spinner"></div>
                     <p class="loading-text">Calculando riesgo...</p>
                 </div>
 
+                <!-- Result -->
                 <div id="resultArea" class="result-area hidden">
                     <div class="form-card">
                         <div class="risk-display">
@@ -296,6 +305,7 @@
 
         </form>
 
+        <!-- Navigation -->
         <div class="nav-buttons">
             <button type="button" id="btnPrev" class="btn-secondary hidden">Anterior</button>
             <button type="button" id="btnNext" class="btn-primary">Siguiente</button>
