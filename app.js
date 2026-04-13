@@ -9,9 +9,9 @@ const STEP_LABELS = [
     "Registrador",
     "Paciente",
     "Comorbilidades",
-    "Historia oncologica",
-    "Historia quirurgica",
-    "Cirugia planeada",
+    "Historia oncológica",
+    "Historia quirúrgica",
+    "Cirugía planeada",
     "Resultado",
 ];
 
@@ -91,6 +91,14 @@ function initBusinessRules() {
     // 3. Component filtering by flap type
     const tipoSel = document.getElementById("tipodecolgajolibre");
     if (tipoSel) tipoSel.addEventListener("change", filterComponents);
+
+    // 4. Obesidad / bajo peso — mutuamente excluyentes
+    ["obesidad", "bajopeso"].forEach(name => {
+        document.querySelector(`.toggle-group[data-name="${name}"]`)
+            ?.querySelectorAll(".toggle-btn")
+            .forEach(btn => btn.addEventListener("click",
+                () => setTimeout(() => enforceMutualExclusion(name), 50)));
+    });
 }
 
 /* Rule 1 — ASA 1 blocked when any comorbidity or active smoking */
@@ -178,6 +186,19 @@ function filterComponents() {
     if (allowed.length === 1) compSel.value = allowed[0];
 }
 
+/* Rule 5 — Obesidad / bajo peso: mutuamente excluyentes */
+function enforceMutualExclusion(selectedName) {
+    const otherName = selectedName === "obesidad" ? "bajopeso" : "obesidad";
+    if (getToggleValue(selectedName) === "1") {
+        const group = document.querySelector(`.toggle-group[data-name="${otherName}"]`);
+        if (group) {
+            group.querySelectorAll(".toggle-btn").forEach(btn => {
+                btn.classList.toggle("selected", btn.dataset.value === "0");
+            });
+        }
+    }
+}
+
 /* ═══════════════════════════════════════════════════════════════════
    TOGGLES — binary Yes/No buttons
    ═══════════════════════════════════════════════════════════════════ */
@@ -250,7 +271,7 @@ function updateUI() {
     btnPrev.classList.toggle("hidden", currentStep === 1);
 
     if (currentStep === TOTAL_STEPS) {
-        btnNext.textContent = "Nueva evaluacion";
+        btnNext.textContent = "Nueva evaluación";
         btnNext.className = "btn-primary";
     } else if (currentStep === 6) {
         btnNext.textContent = "Calcular riesgo";
@@ -279,7 +300,7 @@ function validateStep(step) {
             markInvalid(el, "Campo requerido");
             valid = false;
         } else if (el.type === "email" && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(el.value)) {
-            markInvalid(el, "Correo no valido");
+            markInvalid(el, "Correo no válido");
             valid = false;
         } else if (el.type === "number") {
             const v = parseInt(el.value);
@@ -381,7 +402,7 @@ async function calculateRisk() {
 
     } catch (err) {
         hide("loadingArea");
-        showSaveStatus("Error de conexion: " + err.message, false);
+        showSaveStatus("Error de conexión: " + err.message, false);
     }
 }
 

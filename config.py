@@ -22,7 +22,7 @@ TIPO_COLGAJO_MAP = {
 
 # ─── Componentes válidos por tipo de colgajo (EDITABLE) ──────────────
 COLGAJO_COMPONENTES = {
-    "0": ["FASCIOCUTANEO", "OSTEOCUTANEO", "NERVIO"],
+    "0": ["DERMOGRASO"],
     "1": ["FASCIOCUTANEO", "MUSCULOCUTANEO", "DERMOGRASO"],
     "2": ["DERMOGRASO"],
     "3": ["OSTEOCUTANEO", "OSEO", "FASCIOCUTANEO"],
