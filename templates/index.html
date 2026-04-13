@@ -6,7 +6,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="theme-color" content="#f5f5f7">
-    <title>FlapRisk — Evaluacion de Riesgo</title>
+    <title>FlapRisk — Evaluación de Riesgo</title>
     <link rel="stylesheet" href="/static/css/style.css">
 </head>
 <body>
@@ -64,7 +64,7 @@
                     <div class="field">
                         <label for="id_paciente">ID del paciente</label>
                         <input type="text" id="id_paciente" name="id_paciente" required
-                               placeholder="Identificador unico">
+                               placeholder="Identificador único">
                     </div>
                     <div class="field">
                         <label for="sexo">Sexo</label>
@@ -75,7 +75,7 @@
                     <div class="field">
                         <label for="edad">Edad</label>
                         <input type="number" id="edad" name="edad" required
-                               min="18" max="100" placeholder="18 – 100 anos" inputmode="numeric">
+                               min="18" max="100" placeholder="18 – 100 años" inputmode="numeric">
                     </div>
                 </div>
             </section>
@@ -88,48 +88,65 @@
                         <label>Obesidad</label>
                         <div class="toggle-group" data-name="obesidad">
                             <button type="button" class="toggle-btn" data-value="0">No</button>
-                            <button type="button" class="toggle-btn" data-value="1">Si</button>
+                            <button type="button" class="toggle-btn" data-value="1">Sí</button>
                         </div>
                     </div>
                     <div class="binary-field">
                         <label>Bajo peso</label>
                         <div class="toggle-group" data-name="bajopeso">
                             <button type="button" class="toggle-btn" data-value="0">No</button>
-                            <button type="button" class="toggle-btn" data-value="1">Si</button>
+                            <button type="button" class="toggle-btn" data-value="1">Sí</button>
                         </div>
                     </div>
                     <div class="binary-field">
-                        <label>Hipertension</label>
+                        <label>Hipertensión</label>
                         <div class="toggle-group" data-name="hipertension">
                             <button type="button" class="toggle-btn" data-value="0">No</button>
-                            <button type="button" class="toggle-btn" data-value="1">Si</button>
+                            <button type="button" class="toggle-btn" data-value="1">Sí</button>
                         </div>
                     </div>
                     <div class="binary-field">
                         <label>Diabetes</label>
                         <div class="toggle-group" data-name="diabetes">
                             <button type="button" class="toggle-btn" data-value="0">No</button>
-                            <button type="button" class="toggle-btn" data-value="1">Si</button>
+                            <button type="button" class="toggle-btn" data-value="1">Sí</button>
                         </div>
                     </div>
                     <div class="binary-field">
-                        <label>Enfermedad vascular periferica</label>
+                        <label>Enfermedad vascular periférica</label>
                         <div class="toggle-group" data-name="evp">
                             <button type="button" class="toggle-btn" data-value="0">No</button>
-                            <button type="button" class="toggle-btn" data-value="1">Si</button>
+                            <button type="button" class="toggle-btn" data-value="1">Sí</button>
                         </div>
                     </div>
                     <div class="binary-field">
-                        <label>Anemia prequirurgica</label>
+                        <label>Anemia prequirúrgica</label>
                         <div class="toggle-group" data-name="anemia">
                             <button type="button" class="toggle-btn" data-value="0">No</button>
-                            <button type="button" class="toggle-btn" data-value="1">Si</button>
+                            <button type="button" class="toggle-btn" data-value="1">Sí</button>
+                        </div>
+                    </div>
+                    <div class="binary-field">
+                        <label>Transfusión preoperatoria</label>
+                        <div class="toggle-group" data-name="transfusion_preop">
+                            <button type="button" class="toggle-btn" data-value="0">No</button>
+                            <button type="button" class="toggle-btn" data-value="1">Sí</button>
                         </div>
                     </div>
                 </div>
+                <div id="warningAnemiaTransfusion" class="hidden"
+                     style="background:#fef3c7;border:1px solid #f59e0b;border-radius:12px;padding:1rem;margin-bottom:1rem;">
+                    <p style="margin:0 0 0.5rem;color:#92400e;font-size:0.9rem;">
+                        <strong>Atención:</strong> Anemia = No con Transfusión preoperatoria = Sí es una combinación inusual.
+                    </p>
+                    <label style="display:flex;align-items:center;gap:0.5rem;color:#92400e;font-size:0.85rem;cursor:pointer;">
+                        <input type="checkbox" id="confirmAnemiaTransfusion">
+                        Confirmo que los datos son correctos
+                    </label>
+                </div>
                 <div class="form-card">
                     <div class="field">
-                        <label for="asa">Clasificacion ASA</label>
+                        <label for="asa">Clasificación ASA</label>
                         <select id="asa" name="asa" required>
                             <option value="">Seleccionar...</option>
                         </select>
@@ -143,88 +160,71 @@
                             <option value="">Seleccionar...</option>
                         </select>
                         <p style="color:#86868b;font-size:0.8rem;margin:0.25rem 0 0;">
-                            Variable prospectiva — no incluida en la prediccion del modelo.
+                            Variable prospectiva — no incluida en la predicción del modelo.
                         </p>
                     </div>
                 </div>
             </section>
 
-            <!-- Step 4: Historia oncologica -->
+            <!-- Step 4: Historia oncológica -->
             <section class="step" data-step="4">
-                <h2>Historia oncologica</h2>
+                <h2>Historia oncológica</h2>
                 <div class="binary-grid">
                     <div class="binary-field">
-                        <label>Antecedente oncologico</label>
+                        <label>Antecedente oncológico</label>
                         <div class="toggle-group" data-name="antecedente_onco">
                             <button type="button" class="toggle-btn" data-value="0">No</button>
-                            <button type="button" class="toggle-btn" data-value="1">Si</button>
+                            <button type="button" class="toggle-btn" data-value="1">Sí</button>
                         </div>
                     </div>
                     <div class="binary-field">
                         <label>Radioterapia</label>
                         <div class="toggle-group" data-name="radioterapia">
                             <button type="button" class="toggle-btn" data-value="0">No</button>
-                            <button type="button" class="toggle-btn" data-value="1">Si</button>
+                            <button type="button" class="toggle-btn" data-value="1">Sí</button>
                         </div>
                     </div>
                     <div class="binary-field">
                         <label>Quimioterapia</label>
                         <div class="toggle-group" data-name="quimioterapia">
                             <button type="button" class="toggle-btn" data-value="0">No</button>
-                            <button type="button" class="toggle-btn" data-value="1">Si</button>
+                            <button type="button" class="toggle-btn" data-value="1">Sí</button>
                         </div>
                     </div>
                 </div>
             </section>
 
-            <!-- Step 5: Historia quirurgica -->
+            <!-- Step 5: Historia quirúrgica -->
             <section class="step" data-step="5">
-                <h2>Historia quirurgica</h2>
+                <h2>Historia quirúrgica</h2>
                 <div class="binary-grid">
-                    <div class="binary-field">
-                        <label>Transfusion preoperatoria</label>
-                        <div class="toggle-group" data-name="transfusion_preop">
-                            <button type="button" class="toggle-btn" data-value="0">No</button>
-                            <button type="button" class="toggle-btn" data-value="1">Si</button>
-                        </div>
-                    </div>
                     <div class="binary-field">
                         <label>Antecedente de trauma</label>
                         <div class="toggle-group" data-name="antecedentedetrauma">
                             <button type="button" class="toggle-btn" data-value="0">No</button>
-                            <button type="button" class="toggle-btn" data-value="1">Si</button>
+                            <button type="button" class="toggle-btn" data-value="1">Sí</button>
                         </div>
                     </div>
                     <div class="binary-field">
-                        <label>Infeccion previa</label>
+                        <label>Infección previa</label>
                         <div class="toggle-group" data-name="infeccion_previa">
                             <button type="button" class="toggle-btn" data-value="0">No</button>
-                            <button type="button" class="toggle-btn" data-value="1">Si</button>
+                            <button type="button" class="toggle-btn" data-value="1">Sí</button>
                         </div>
                     </div>
                     <div class="binary-field">
-                        <label>Cirugia previa</label>
+                        <label>Cirugía previa</label>
                         <div class="toggle-group" data-name="cirugia_previa">
                             <button type="button" class="toggle-btn" data-value="0">No</button>
-                            <button type="button" class="toggle-btn" data-value="1">Si</button>
+                            <button type="button" class="toggle-btn" data-value="1">Sí</button>
                         </div>
                     </div>
-                </div>
-                <div id="warningAnemiaTransfusion" class="hidden"
-                     style="background:#fef3c7;border:1px solid #f59e0b;border-radius:12px;padding:1rem;margin-top:1rem;">
-                    <p style="margin:0 0 0.5rem;color:#92400e;font-size:0.9rem;">
-                        <strong>Atencion:</strong> Anemia = No con Transfusion preoperatoria = Si es una combinacion inusual.
-                    </p>
-                    <label style="display:flex;align-items:center;gap:0.5rem;color:#92400e;font-size:0.85rem;cursor:pointer;">
-                        <input type="checkbox" id="confirmAnemiaTransfusion">
-                        Confirmo que los datos son correctos
-                    </label>
                 </div>
             </section>
 
             <!-- Step 6: Cirugia planeada -->
             <section class="step" data-step="6">
-                <h2>Cirugia planeada</h2>
+                <h2>Cirugía planeada</h2>
                 <div class="form-card">
                     <div class="field">
                         <label for="tipodecolgajolibre">Tipo de colgajo libre</label>
@@ -239,7 +239,7 @@
                         </select>
                     </div>
                     <div class="field">
-                        <label for="indicacion">Indicacion quirurgica</label>
+                        <label for="indicacion">Indicación quirúrgica</label>
                         <select id="indicacion" name="indicacion" required>
                             <option value="">Seleccionar...</option>
                         </select>
@@ -296,8 +296,8 @@
                             <path d="M10 6v5M10 13.5v.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
                         </svg>
                         <div class="disclaimer-text">
-                            <strong>Aviso clinico</strong>
-                            Este modelo se encuentra en fase de evaluacion prospectiva. Los resultados son orientativos y no reemplazan el juicio clinico del cirujano tratante.
+                            <strong>Aviso clínico</strong>
+                            Este modelo se encuentra en fase de evaluación prospectiva. Los resultados son orientativos y no reemplazan el juicio clínico del cirujano tratante.
                         </div>
                     </div>
 
@@ -316,7 +316,7 @@
 
     <footer class="footer">
         <p class="footer-version">FlapRisk {{ config.form_version }} · Modelo {{ config.model_version }}</p>
-        <p class="footer-disclaimer">Herramienta en evaluacion prospectiva. No reemplaza el juicio clinico.</p>
+        <p class="footer-disclaimer">Herramienta en evaluación prospectiva. No reemplaza el juicio clínico.</p>
     </footer>
 
     <script>
