@@ -119,6 +119,7 @@ body {
     height: 72px;
     border-radius: var(--radius-lg);
     box-shadow: var(--shadow-md);
+    object-fit: contain;
 }
 
 .login-card h1 {
@@ -199,6 +200,7 @@ body {
     width: 30px;
     height: 30px;
     border-radius: 8px;
+    object-fit: contain;
 }
 
 .topbar-logout {
